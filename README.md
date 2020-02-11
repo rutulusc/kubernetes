@@ -66,3 +66,33 @@ It is also a good idea to verify that the Flannel pods are up and running. Run t
 
 You should have three pods with flannel in the name, and all three should have a status of Running.
 
+In order to run and manage containers with Kubernetes, you will need to use pods.
+
+Here are the commands used:
+
+Create a simple pod running an nginx container:
+`cat << EOF | kubectl create -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx`
+    `image: nginx`
+`EOF`
+
+Get a list of pods and verify that your new nginx pod is in the Running state:
+
+`kubectl get pods`
+
+Other useful commands: `kubectl get pods -n kube-system`
+
+Get more information about your nginx pod:
+
+`kubectl describe pod nginx`
+
+Delete the pod:
+
+`kubectl delete pod nginx`
+
