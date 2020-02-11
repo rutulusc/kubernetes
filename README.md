@@ -205,3 +205,39 @@ Get a list of pods:
 
 You should see two pods created by the deployment. Delete one and check out the pods again to see how the state is maintained by deployments. 
 
+# Services
+
+While deployments provide a great way to automate the management of your pods, you need a way to easily communicate with the dynamic set of replicas managed by a deployment. This is where services come in. 
+
+Here are the commands used:
+
+Create a NodePort service on top of your nginx pods:
+
+```
+cat << EOF | kubectl create -f -
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  type: NodePort
+EOF
+```
+
+Get a list of services in the cluster.
+
+`kubectl get svc` or `kubectl get service`
+
+You should see your service called nginx-service. Since this is a NodePort service, you should be able to access it using port 30080 on any of your cluster's servers. You can test this with the command:
+
+`curl localhost:30080`
+
+You should get an HTML response from nginx!
+
