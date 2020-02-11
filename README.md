@@ -49,7 +49,9 @@ sudo sysctl -p`
 
 Install Flannel in the cluster by running this only on the Master node:
 
-`kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml`
+```
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+```
 
 Verify that all the nodes now have a STATUS of Ready:
 
