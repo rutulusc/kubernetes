@@ -51,12 +51,7 @@ Verify that all the nodes now have a STATUS of Ready:
 
 `kubectl get nodes`
 
-You should see all three of your servers listed, and all should have a STATUS of Ready. It should look something like this:
-
-`NAME                      STATUS     ROLES    AGE     VERSION
-rutul.mylabserver.com      Ready      master   5m17s   v1.12.2
-rutul.mylabserver.com      Ready      <none>   53s     v1.12.2
-rutul.mylabserver.com      Ready      <none>   31s     v1.12.2`
+You should see all three of your servers listed, and all should have a STATUS of Ready.
 
 Note: It may take a few moments for all nodes to enter the Ready status, so if they are not all Ready, wait a few moments and try again.
 
@@ -71,15 +66,25 @@ In order to run and manage containers with Kubernetes, you will need to use pods
 Here are the commands used:
 
 Create a simple pod running an nginx container:
+
 `cat << EOF | kubectl create -f -`
+
 `apiVersion: v1`
+
 `kind: Pod`
+
 `metadata:`
-  `name: nginx`
+
+`name: nginx`
+
 `spec:`
-  `containers:`
-  `- name: nginx`
-    `image: nginx`
+
+`containers:`
+
+`- name: nginx`
+
+`image: nginx`
+
 `EOF`
 
 Get a list of pods and verify that your new nginx pod is in the Running state:
