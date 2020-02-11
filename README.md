@@ -1,4 +1,4 @@
-# kubernetes
+# Kubernetes
 
 After installing (refering install_docker.sh, install_kubernetes_tools.sh), we will bootstrap the cluster on the Kube master node. Then, we will join each of the two worker nodes to the cluster, forming an actual multi-node Kubernetes cluster.
 
