@@ -71,14 +71,14 @@ In order to run and manage containers with Kubernetes, you will need to use pods
 Here are the commands used:
 
 Create a simple pod running an nginx container:
-`cat << EOF | kubectl create -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
-  containers:
-  - name: nginx`
+`cat << EOF | kubectl create -f -`
+`apiVersion: v1`
+`kind: Pod`
+`metadata:`
+  `name: nginx`
+`spec:`
+  `containers:`
+  `- name: nginx`
     `image: nginx`
 `EOF`
 
