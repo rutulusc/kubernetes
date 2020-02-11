@@ -10,9 +10,11 @@ On the Kube master node, initialize the cluster:
 
 That command may take a few minutes to complete. When it is done, set up the local kubeconfig:
 
-`mkdir -p $HOME/.kube
+```
+mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config`
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
 
 Verify that the cluster is responsive and that Kubectl is working:
 
@@ -51,7 +53,9 @@ Verify that all the nodes now have a STATUS of Ready:
 
 `kubectl get nodes`
 
-You should see all three of your servers listed, and all should have a STATUS of Ready.
+You should see all three of your servers listed, and all should have a STATUS of Ready. Get more information about a specific node:
+
+`kubectl describe node $node_name`
 
 Note: It may take a few moments for all nodes to enter the Ready status, so if they are not all Ready, wait a few moments and try again.
 
@@ -67,25 +71,18 @@ Here are the commands used:
 
 Create a simple pod running an nginx container:
 
-`cat << EOF | kubectl create -f -`
-
-`apiVersion: v1`
-
-`kind: Pod`
-
-`metadata:`
-
-`name: nginx`
-
-`spec:`
-
-`containers:`
-
-`- name: nginx`
-
-`image: nginx`
-
-`EOF`
+```
+cat << EOF | kubectl create -f -
+apiVersion: v1
+kind: Pod
+metadata:
+name: nginx
+spec:
+containers:
+- name: nginx
+image: nginx
+EOF
+```
 
 Get a list of pods and verify that your new nginx pod is in the Running state:
 
@@ -100,4 +97,60 @@ Get more information about your nginx pod:
 Delete the pod:
 
 `kubectl delete pod nginx`
+
+
+# Networking in Kubernetes
+The network functionality by contacting one pod from another pod over the virtual network. Create a deployment with two nginx pods:
+
+```
+cat << EOF | kubectl create -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.15.4
+        ports:
+        - containerPort: 80
+EOF
+```
+
+Create a busybox pod to use for testing:
+
+```
+cat << EOF | kubectl create -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+  - name: busybox
+    image: radial/busyboxplus:curl
+    args:
+    - sleep
+    - "1000"
+EOF
+```
+
+Get the IP addresses of your pods:
+
+`kubectl get pods -o wide`
+
+Get the IP address of one of the nginx pods, then contact that nginx pod from the busybox pod using the nginx pod's IP address:
+
+`kubectl exec busybox -- curl $nginx_pod_ip`
 
